@@ -56,3 +56,23 @@ This repository is dual licensed under the Apache2 (to match the upstream
 Kubernetes [charts](https://github.com/helm/charts) repository) and
 3-clause BSD (to match the rest of Project Jupyter repositories) licenses. See
 the `LICENSE` file for more information!
+
+## Deployment of the chart using an ibox
+An ibox-iscsi storage class needs to be deployed to the k8s cluster.  See https://git.infinidat.com/dohlemacher/infinidat-k8s-installer/blob/PSDEV-235/AddHelmChart/helm/infinidat-provisioner/iboxProvisionerHelmDocs.ipynb
+
+### Deploy the chart
+- `cd jupyterhub/`
+- `helm install --namespace jup --name jupyterhub --values values.yaml --values config.yaml .`
+- `kubectl -n jup get all`
+    - Monitor the jup namespace and verify jupyterhub is deployed properly.
+
+### Access from your laptop
+- `kubectl port-forward -n jup <proxy-NNN name> 9000:8000
+- Visit http://http://127.0.0.1:9000
+    - Use any name and passwd (for now).
+    - Create a notebook.
+
+### Jupyterhub teardown
+- `helm delete --purge jupyterhub`
+- There may be user pods running. For each:
+    - `kubectl -n jup delete pod <user pod name>`

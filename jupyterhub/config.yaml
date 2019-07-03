@@ -1,0 +1,22 @@
+---
+proxy:
+  secretToken: d8dce5448115f9a196fb811b83693992ff055f1f451d85a417418cb7415b1f23
+
+singleuser:
+  storage:
+    # type: none
+    dynamic:
+      storageClass: ibox-iscsi
+
+hub:
+  db:
+    type: sqlite-pvc
+    pvc:
+      storageClassName: ibox-iscsi
+
+iscsi:
+  enable: true
+  fsType: ext4
+  readonly: false
+  networkspaces: iscsi1
+  poolName: "ps-k8s-cicd"

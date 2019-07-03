@@ -10,9 +10,8 @@ hub:
   baseUrl: /
   cookieSecret:
   publicURL:
-  initContainers: []
-  uid: 1000
-  fsGid: 1000
+  uid: 0
+  fsGid: 0
   nodeSelector: {}
   concurrentSpawnLimit: 64
   consecutiveFailureLimit: 5
@@ -45,12 +44,13 @@ hub:
   extraVolumeMounts: []
   image:
     name: jupyterhub/k8s-hub
-    tag: generated-by-chartpress
+    tag: '0.8.2'
   resources:
     requests:
       cpu: 200m
       memory: 512Mi
   services: {}
+  imagePullPolicy: IfNotPresent
   imagePullSecret:
     enabled: false
     registry:
@@ -86,7 +86,8 @@ proxy:
   chp:
     image:
       name: jupyterhub/configurable-http-proxy
-      tag: 4.1.0
+      tag: 3.0.0
+      pullPolicy: IfNotPresent
     resources:
       requests:
         cpu: 200m
@@ -95,13 +96,14 @@ proxy:
     image:
       name: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
       tag: 0.15.0
+      pullPolicy: IfNotPresent
     proxyBodySize: 64m
-    hstsIncludeSubdomains: 'false'
     resources: {}
   lego:
     image:
       name: jetstack/kube-lego
       tag: 0.1.7
+      pullPolicy: IfNotPresent
     resources: {}
   labels: {}
   nodeSelector: {}
@@ -164,7 +166,7 @@ singleuser:
   networkTools:
     image:
       name: jupyterhub/k8s-network-tools
-      tag: generated-by-chartpress
+      tag: '0.8.2'
   cloudMetadata:
     enabled: false
     ip: 169.254.169.254
@@ -182,7 +184,7 @@ singleuser:
   extraLabels:
     hub.jupyter.org/network-access-hub: 'true'
   extraEnv: {}
-  lifecycleHooks: {}
+  lifecycleHooks:
   initContainers: []
   extraContainers: []
   uid: 1000
@@ -199,13 +201,13 @@ singleuser:
     capacity: 10Gi
     homeMountPath: /home/jovyan
     dynamic:
-      storageClass:
+      storageClass: ibox-iscsi
       pvcNameTemplate: claim-{username}{servername}
       volumeNameTemplate: volume-{username}{servername}
       storageAccessModes: [ReadWriteOnce]
   image:
     name: jupyterhub/k8s-singleuser-sample
-    tag: generated-by-chartpress
+    tag: '0.8.2'
     pullPolicy: IfNotPresent
   imagePullSecret:
     enabled: false
@@ -229,8 +231,8 @@ singleuser:
 
 scheduling:
   userScheduler:
-    enabled: true
-    replicas: 2
+    enabled: false
+    replicas: 1
     logLevel: 4
     image:
       name: gcr.io/google_containers/kube-scheduler-amd64
@@ -264,9 +266,9 @@ prePuller:
     enabled: true
     image:
       name: jupyterhub/k8s-image-awaiter
-      tag: generated-by-chartpress
+      tag: '0.8.2'
   continuous:
-    enabled: true
+    enabled: false
   extraImages: {}
   pause:
     image:
