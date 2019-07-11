@@ -69,7 +69,12 @@ spec:
         {{- end }}
         - name: hub
           image: {{ .Values.hub.image.name }}:{{ .Values.hub.image.tag }}
-          command:
+          ### Alternative to run jh process manually via an exec.
+          # command:
+          #   - "sleep"
+          # args:
+          #   - "96000"
+          command:    
             - jupyterhub
             - --config
             - /srv/jupyterhub_config.py

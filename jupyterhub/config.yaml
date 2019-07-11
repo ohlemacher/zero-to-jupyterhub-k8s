@@ -20,3 +20,84 @@ iscsi:
   readonly: false
   networkspaces: iscsi1
   poolName: "ps-k8s-cicd"
+
+# CN=infinidat,OU=Security Groups,OU=Groups,OU=Corp,DC=infinidat,DC=com
+### LDAP Configuration
+# auth:
+#   type: ldap
+#   ldap:
+#     server:
+#       address: infinidat.com
+#     dn:
+#       templates: []
+#         #- 'uid={username},ou=Security Groups,dc=infinidat,dc=com'
+#         #- 'uid={username},ou=Groups,dc=infinidat,dc=com'
+#         #- 'uid={username},ou=Corp,dc=infinidat,dc=com'
+#   state:
+#     enabled: false
+#   admin:
+#     access: true
+#     users:
+#       - dohlemacher
+#       - kfred
+
+# CN=infinidat,OU=Security Groups,OU=Groups,OU=Corp,DC=infinidat,DC=com
+### LDAP/AD Configuration
+auth:
+  type: ldap
+  ldap:
+    server:
+      address: 'infinidat.com'
+    dn:
+      lookup: true 
+      search:
+        filter: '({login_attr}={login})'
+      templates:
+        - 'CN={username},ou=Professional Services USA,ou=Infinidat Global,ou=Users,ou=Corp,dc=infinidat,dc=com'
+        # - 'uid={username},ou=Security Groups,dc=infinidat,dc=com'
+        # - 'uid={username},ou=Groups,dc=infinidat,dc=com'
+        # - 'uid={username},ou=Corp,dc=infinidat,dc=com'
+        #- 'uid={username},ou=Non team dls,ou=Groups,ou=Corp,dc=infinidat,dc=com'
+      user:
+        searchBase: 'ou=Professional Services USA,ou=Infinidat Global,ou=Users,ou=Corp,dc=infinidat,dc=com'
+        # 'ou=Security Groups,ou=Groups,ou=Corp,dc=infinidat,dc=com'
+        escape: False 
+        attribute: 'sAMAccountName'
+        dnAttribute: 'cn'
+    allowedGroups:
+      - 'cn=US Professional Services,ou=Non team dls,ou=Groups,ou=Corp,dc=infinidat,dc=com'
+      #- 'CN=Professional Services US,ou=Non team dls,ou=Groups,ou=Corp,dc=infinidat,dc=com'
+      #- 'CN=infinidat,OU=Security Groups,dc=infinidat,dc=com'
+      #- 'CN=infinidat,OU=Groups,OU=Corp,dc=infinidat,dc=com'
+      #- 'CN=infinidat,OU=Corp,dc=infinidat,dc=com'
+  state:
+    enabled: false
+  admin:
+    access: true
+    users:
+      - dohlemacher
+      - kfred 
+
+### Dummy auth working with a common password
+# auth:
+#   type: dummy
+#   whitelist:
+#     users:
+#       - dohlemacher
+#       - kfred
+#       - jnichols
+#       - gtouretsky
+#   admin:
+#     access: true
+#     users:
+#       - dohlemacher
+#   dummy:
+#     password: xsignnet1
+#   ldap:
+#     dn:
+#       search: {}
+#       user: {}
+#     user: {}
+#   state:
+#     enabled: false
+#     cryptoKey:

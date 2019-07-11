@@ -10,6 +10,7 @@ hub:
   baseUrl: /
   cookieSecret:
   publicURL:
+  initContainers: []
   uid: 0
   fsGid: 0
   nodeSelector: {}
@@ -43,8 +44,11 @@ hub:
   extraVolumes: []
   extraVolumeMounts: []
   image:
-    name: jupyterhub/k8s-hub
-    tag: '0.8.2'
+    # name: jupyterhub/k8s-hub
+    # tag: '0.9-445a953'
+    name: sqqqrly/k8s-hub-patched
+    tag: '0.9-445a953-patch'
+    pullPolicy: Always
   resources:
     requests:
       cpu: 200m
@@ -86,8 +90,7 @@ proxy:
   chp:
     image:
       name: jupyterhub/configurable-http-proxy
-      tag: 3.0.0
-      pullPolicy: IfNotPresent
+      tag: 4.1.0
     resources:
       requests:
         cpu: 200m
@@ -98,12 +101,12 @@ proxy:
       tag: 0.15.0
       pullPolicy: IfNotPresent
     proxyBodySize: 64m
+    hstsIncludeSubdomains: 'false'
     resources: {}
   lego:
     image:
       name: jetstack/kube-lego
       tag: 0.1.7
-      pullPolicy: IfNotPresent
     resources: {}
   labels: {}
   nodeSelector: {}
@@ -132,23 +135,23 @@ proxy:
               cidr: 0.0.0.0/0
 
 
-auth:
-  type: dummy
-  whitelist:
-    users:
-  admin:
-    access: true
-    users:
-  dummy:
-    password:
-  ldap:
-    dn:
-      search: {}
-      user: {}
-    user: {}
-  state:
-    enabled: false
-    cryptoKey:
+# auth:
+#   type: dummy
+#   whitelist:
+#     users:
+#   admin:
+#     access: true
+#     users:
+#   dummy:
+#     password:
+#   ldap:
+#     dn:
+#       search: {}
+#       user: {}
+#     user: {}
+#   state:
+#     enabled: false
+#     cryptoKey:
 
 
 singleuser:
@@ -166,7 +169,7 @@ singleuser:
   networkTools:
     image:
       name: jupyterhub/k8s-network-tools
-      tag: '0.8.2'
+      tag: '0.9-b51ffeb'
   cloudMetadata:
     enabled: false
     ip: 169.254.169.254
@@ -207,7 +210,7 @@ singleuser:
       storageAccessModes: [ReadWriteOnce]
   image:
     name: jupyterhub/k8s-singleuser-sample
-    tag: '0.8.2'
+    tag: '0.9-b51ffeb'
     pullPolicy: IfNotPresent
   imagePullSecret:
     enabled: false
@@ -266,9 +269,9 @@ prePuller:
     enabled: true
     image:
       name: jupyterhub/k8s-image-awaiter
-      tag: '0.8.2'
+      tag: '0.9-b51ffeb'
   continuous:
-    enabled: false
+    enabled: true
   extraImages: {}
   pause:
     image:
@@ -294,4 +297,4 @@ cull:
 
 
 debug:
-  enabled: false
+  enabled: true

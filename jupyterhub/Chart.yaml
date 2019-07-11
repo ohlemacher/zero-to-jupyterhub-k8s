@@ -1,10 +1,10 @@
-name: jupyterhub
-version: 0.9-dev
 appVersion: 1.0.0
 description: Multi-user Jupyter installation
 home: https://z2jh.jupyter.org
-sources:
-  - https://github.com/jupyterhub/zero-to-jupyterhub-k8s
 icon: https://jupyter.org/assets/hublogo.svg
 kubeVersion: '>=1.11.0-0'
+name: jupyterhub
+sources:
+- https://github.com/jupyterhub/zero-to-jupyterhub-k8s
 tillerVersion: '>=2.11.0-0'
+version: 0.9-b609a67

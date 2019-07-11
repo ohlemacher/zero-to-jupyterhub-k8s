@@ -15,6 +15,7 @@
 *.bak
 *.tmp
 *~
+*.un~
 # Various IDEs
 .project
 .idea/

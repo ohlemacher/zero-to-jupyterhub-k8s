@@ -62,17 +62,22 @@ An ibox-iscsi storage class needs to be deployed to the k8s cluster.  See https:
 
 ### Deploy the chart
 - `cd jupyterhub/`
-- `helm install --namespace jup --name jupyterhub --values values.yaml --values config.yaml .`
+- Execute one of:
+    - `helm install --namespace jup --name jupyterhub --values values.yaml --values config.yaml .`
+    - `helm upgrade --install jupyter --values values.yaml --values config.yaml .`
 - `kubectl -n jup get all`
     - Monitor the jup namespace and verify jupyterhub is deployed properly.
 
 ### Access from your laptop
-- `kubectl port-forward -n jup <proxy-NNN name> 9000:8000
+- `kubectl port-forward -n jup "proxy-NNN name" 9000:8000`
 - Visit http://http://127.0.0.1:9000
+    - If necessary, you may another local port rather than 9000.
     - Use any name and passwd (for now).
     - Create a notebook.
 
 ### Jupyterhub teardown
 - `helm delete --purge jupyterhub`
-- There may be user pods running. For each:
+- There may be user pods running. These have names such as "pod/jupyter-<user>". For each:
     - `kubectl -n jup delete pod <user pod name>`
+- Delete the namespace:
+    - `kubectl delete namespace jup`

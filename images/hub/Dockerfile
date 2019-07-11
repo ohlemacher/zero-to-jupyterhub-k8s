@@ -15,6 +15,7 @@ RUN apt-get update && \
       build-essential \
       sqlite3 \
       curl \
+      vim \
       dnsutils \
       $(bash -c 'if [[ $JUPYTERHUB_VERSION == "git"* ]]; then \
         # workaround for https://bugs.launchpad.net/ubuntu/+source/nodejs/+bug/1794589
@@ -57,6 +58,15 @@ RUN chown ${NB_USER}:${NB_USER} /srv/jupyterhub
 
 # JupyterHub API port
 EXPOSE 8081
+
+# Patch ldapauthenticator.py v. 1.2.2
+# https://github.com/jupyterhub/ldapauthenticator/issues/128
+RUN \
+    infinisrc="/usr/local/lib/python3.6/dist-packages/ldapauthenticator/ldapauthenticator.py" \
+    && infinitemp="/root/ldapauthenticator.py" \
+    && awk '/return conn.response\[0\]\['\''attributes'\''\]\[self.lookup_dn_user_dn_attribute\]/ { $0=$0"[0]" } 1' "$infinisrc" > "$infinitemp" \
+    && sed -i 's?\r??g' "$infinitemp" \
+    && mv "$infinitemp" "$infinisrc"
 
 USER ${NB_USER}
 CMD ["jupyterhub", "--config", "/srv/jupyterhub_config.py"]
