@@ -62,6 +62,7 @@ An ibox-iscsi storage class needs to be deployed to the k8s cluster.  See https:
 
 ### Deploy the chart
 - `cd jupyterhub/`
+- A kubeconfig file is required for our k8s cluster.
 - Execute one of:
     - `helm install --namespace jup --name jupyterhub --values values.yaml --values config.yaml .`
     - `helm upgrade --install jupyter --values values.yaml --values config.yaml .`
@@ -69,11 +70,19 @@ An ibox-iscsi storage class needs to be deployed to the k8s cluster.  See https:
     - Monitor the jup namespace and verify jupyterhub is deployed properly.
 
 ### Access from your laptop
+Using the nodePort, visit any one of of the virtual machines (nodes) hosting k8s (recommended):
+- Visit http://172.31.78.164:32222
+- Visit http://172.31.78.165:32222
+- Visit http://172.31.78.166:32222
+
+Using port-forwarding (not recommended):
 - `kubectl port-forward -n jup "proxy-NNN name" 9000:8000`
-- Visit http://http://127.0.0.1:9000
-    - If necessary, you may another local port rather than 9000.
-    - Use any name and passwd (for now).
-    - Create a notebook.
+- Visit http://127.0.0.1:9000
+    - If necessary, you may chose another local port rather than 9000 that is greater than 5000.
+
+Create a notebook. Click the `new button` and select Python3.
+
+Open a terminal. Click the `new button` and select terminal.
 
 ### Jupyterhub teardown
 - `helm delete --purge jupyterhub`
@@ -81,3 +90,4 @@ An ibox-iscsi storage class needs to be deployed to the k8s cluster.  See https:
     - `kubectl -n jup delete pod <user pod name>`
 - Delete the namespace:
     - `kubectl delete namespace jup`
+- To truly cleanup, with loss of user env data, delete PVCs and PVs associated with JH.

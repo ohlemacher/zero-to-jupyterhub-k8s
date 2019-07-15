@@ -1,18 +1,27 @@
 ---
 proxy:
   secretToken: d8dce5448115f9a196fb811b83693992ff055f1f451d85a417418cb7415b1f23
+  service:
+    nodePorts:
+      http: 32222
 
 singleuser:
   storage:
     # type: none
     dynamic:
-      storageClass: ibox-iscsi
+      storageClass: ibox-iscsi-jupyterhub
+    capacity: 40Gi
+  lifecycleHooks:
+    postStart:
+      exec:
+        - command: ["gitpuller", "https://git.infinidat.com/dohlemacher/notebooks.git", "master", "demos/notebooks"]
+        - command: ["gitpuller", "https://git.infinidat.com/dohlemacher/infinidat-k8s-installer.git", "PSDEV-235/AddHelmChart", "demos/infinidat-k8s-installer"]
 
 hub:
   db:
     type: sqlite-pvc
     pvc:
-      storageClassName: ibox-iscsi
+      storageClassName: ibox-iscsi-jupyterhub
 
 iscsi:
   enable: true
@@ -20,6 +29,7 @@ iscsi:
   readonly: false
   networkspaces: iscsi1
   poolName: "ps-k8s-cicd"
+  provisionType: "THIN"
 
 # CN=infinidat,OU=Security Groups,OU=Groups,OU=Corp,DC=infinidat,DC=com
 ### LDAP Configuration

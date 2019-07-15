@@ -37,15 +37,18 @@ hub:
     password:
   labels: {}
   annotations: {}
-  extraConfig: {}
+  extraConfig: |
+      c.Spawner.cmd = ['jupyter-labhub']
   extraConfigMap: {}
-  extraEnv: {}
+  extraEnv:
+    EDITOR: "vim"
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
   image:
     # name: jupyterhub/k8s-hub
     # tag: '0.9-445a953'
+    # Custom container to fix https://github.com/jupyterhub/ldapauthenticator/issues/128
     name: sqqqrly/k8s-hub-patched
     tag: '0.9-445a953-patch'
     pullPolicy: Always
@@ -209,9 +212,11 @@ singleuser:
       volumeNameTemplate: volume-{username}{servername}
       storageAccessModes: [ReadWriteOnce]
   image:
-    name: jupyterhub/k8s-singleuser-sample
-    tag: '0.9-b51ffeb'
-    pullPolicy: IfNotPresent
+    # name: jupyterhub/k8s-singleuser-sample
+    # tag: '0.9-b51ffeb'
+    name: sqqqrly/jh-infinidat-single-user
+    tag: 0.1
+    pullPolicy: Always
   imagePullSecret:
     enabled: false
     registry:
@@ -229,8 +234,7 @@ singleuser:
     limits: {}
     guarantees: {}
   cmd: jupyterhub-singleuser
-  defaultUrl:
-
+  defaultUrl: "/lab"
 
 scheduling:
   userScheduler:
