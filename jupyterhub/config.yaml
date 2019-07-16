@@ -14,8 +14,8 @@ singleuser:
   lifecycleHooks:
     postStart:
       exec:
-        - command: ["gitpuller", "https://git.infinidat.com/dohlemacher/notebooks.git", "master", "demos/notebooks"]
-        - command: ["gitpuller", "https://git.infinidat.com/dohlemacher/infinidat-k8s-installer.git", "PSDEV-235/AddHelmChart", "demos/infinidat-k8s-installer"]
+        #- command: ["gitpuller", "https://git.infinidat.com/dohlemacher/notebooks.git", "master", "demos/notebooks"]
+        command: ["gitpuller", "https://git.infinidat.com/dohlemacher/infinidat-k8s-installer.git", "PSDEV-235/AddHelmChart", "demos/infinidat-k8s-installer"]
 
 hub:
   db:

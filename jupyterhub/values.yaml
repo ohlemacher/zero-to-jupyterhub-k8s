@@ -215,7 +215,7 @@ singleuser:
     # name: jupyterhub/k8s-singleuser-sample
     # tag: '0.9-b51ffeb'
     name: sqqqrly/jh-infinidat-single-user
-    tag: 0.1
+    tag: 0.2
     pullPolicy: Always
   imagePullSecret:
     enabled: false
