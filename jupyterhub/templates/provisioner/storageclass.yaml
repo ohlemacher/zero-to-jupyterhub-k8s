@@ -8,6 +8,7 @@ parameters:
   fsType: {{ .Values.iscsi.fsType }}
   iscsi_networkspaces: "{{ .Values.iscsi.networkspaces }}"
   pool_name: {{ .Values.iscsi.poolName }}
-  provision_type: "{{ .Values.iscsi.provisionType }}"
+  provision_type: {{ .Values.iscsi.provisionType }}
   readonly: "{{ .Values.iscsi.readonly }}"
+  ssd_enabled: "{{ .Values.iscsi.ssdEnabled }}"
 reclaimPolicy: Delete

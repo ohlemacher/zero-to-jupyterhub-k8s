@@ -28,28 +28,14 @@ iscsi:
   fsType: ext4
   readonly: false
   networkspaces: iscsi1
-  poolName: "ps-k8s-cicd"
+  poolName: "ps-k8s-jupyter"
   provisionType: "THIN"
-
-# CN=infinidat,OU=Security Groups,OU=Groups,OU=Corp,DC=infinidat,DC=com
-### LDAP Configuration
-# auth:
-#   type: ldap
-#   ldap:
-#     server:
-#       address: infinidat.com
-#     dn:
-#       templates: []
-#         #- 'uid={username},ou=Security Groups,dc=infinidat,dc=com'
-#         #- 'uid={username},ou=Groups,dc=infinidat,dc=com'
-#         #- 'uid={username},ou=Corp,dc=infinidat,dc=com'
-#   state:
-#     enabled: false
-#   admin:
-#     access: true
-#     users:
-#       - dohlemacher
-#       - kfred
+  ssd_enabled: true
+  noRootSquash: true
+provisioner:
+  image: "docker.io/infinidat/infinidat-k8s-provisioner" # Join
+  imageTag: "latest"
+  logLevel: "-v=9"
 
 # CN=infinidat,OU=Security Groups,OU=Groups,OU=Corp,DC=infinidat,DC=com
 ### LDAP/AD Configuration
@@ -64,28 +50,20 @@ auth:
         filter: '({login_attr}={login})'
       templates:
         - 'CN={username},ou=Professional Services USA,ou=Infinidat Global,ou=Users,ou=Corp,dc=infinidat,dc=com'
-        # - 'uid={username},ou=Security Groups,dc=infinidat,dc=com'
-        # - 'uid={username},ou=Groups,dc=infinidat,dc=com'
-        # - 'uid={username},ou=Corp,dc=infinidat,dc=com'
-        #- 'uid={username},ou=Non team dls,ou=Groups,ou=Corp,dc=infinidat,dc=com'
       user:
         searchBase: 'ou=Professional Services USA,ou=Infinidat Global,ou=Users,ou=Corp,dc=infinidat,dc=com'
-        # 'ou=Security Groups,ou=Groups,ou=Corp,dc=infinidat,dc=com'
         escape: False 
         attribute: 'sAMAccountName'
         dnAttribute: 'cn'
     allowedGroups:
       - 'cn=US Professional Services,ou=Non team dls,ou=Groups,ou=Corp,dc=infinidat,dc=com'
-      #- 'CN=Professional Services US,ou=Non team dls,ou=Groups,ou=Corp,dc=infinidat,dc=com'
-      #- 'CN=infinidat,OU=Security Groups,dc=infinidat,dc=com'
-      #- 'CN=infinidat,OU=Groups,OU=Corp,dc=infinidat,dc=com'
-      #- 'CN=infinidat,OU=Corp,dc=infinidat,dc=com'
   state:
     enabled: false
   admin:
     access: true
     users:
       - dohlemacher
+      - jnichols
       - kfred 
 
 ### Dummy auth working with a common password

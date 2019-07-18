@@ -189,7 +189,8 @@ singleuser:
   extraAnnotations: {}
   extraLabels:
     hub.jupyter.org/network-access-hub: 'true'
-  extraEnv: {}
+  extraEnv:
+    EDITOR: "vim"
   lifecycleHooks:
   initContainers: []
   extraContainers: []
@@ -207,7 +208,7 @@ singleuser:
     capacity: 10Gi
     homeMountPath: /home/jovyan
     dynamic:
-      storageClass: ibox-iscsi
+      storageClass: ibox-iscsi-jupyter
       pvcNameTemplate: claim-{username}{servername}
       volumeNameTemplate: volume-{username}{servername}
       storageAccessModes: [ReadWriteOnce]
@@ -215,7 +216,8 @@ singleuser:
     # name: jupyterhub/k8s-singleuser-sample
     # tag: '0.9-b51ffeb'
     name: sqqqrly/jh-infinidat-single-user
-    tag: 0.2
+    tag: 0.3
+    # tag 0.2 is working
     pullPolicy: Always
   imagePullSecret:
     enabled: false

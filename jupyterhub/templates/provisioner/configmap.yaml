@@ -1,0 +1,16 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  creationTimestamp: 2016-02-18T19:14:38Z
+  name: infinidatprovisionerconfig
+  # namespace: default
+data:
+  pool_name: {{ .Values.ibox.poolName }}
+  provision_type: {{ .Values.ibox.provisionType }}
+  nfs_mount_options: {{ .Values.iscsi.mountOptions }}
+  nfs_export_permissions: {{ .Values.iscsi.exportPermissions }}
+  max_fs: "4000"
+  max_volume: "100000"
+  ssd_enabled: "{{ .Values.iscsi.ssdEnabled }}"
+  no_root_squash: "{{ .Values.iscsi.noRootSquash }}"

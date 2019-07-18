@@ -1,0 +1,42 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: infinidat-provisioner-deploy
+  labels:
+    app: infinidat-provisioner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: infinidat-provisioner
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: infinidat-provisioner
+    spec:
+      serviceAccount: infinidat-provisioner
+      containers:
+        - name: infinidat-provisioner
+          image: {{ .Values.provisioner.image }}:{{ .Values.provisioner.imageTag }}
+          args:
+            - {{ .Values.provisioner.logLevel }}
+          env:
+            - name: MGMT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mgmt-api-credentials
+                  key: username
+            - name: MGMT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mgmt-api-credentials
+                  key: password
+            - name: MGMT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mgmt-api-credentials
+                  key: management_url
+          imagePullPolicy: "Always"
