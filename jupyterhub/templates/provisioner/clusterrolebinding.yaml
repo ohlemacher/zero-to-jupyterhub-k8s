@@ -6,7 +6,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: infinidat-provisioner
-    namespace: jup 
+    namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: infinidat-provisioner-runner
