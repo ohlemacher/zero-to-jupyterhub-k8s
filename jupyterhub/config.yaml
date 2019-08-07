@@ -56,7 +56,7 @@ auth:
         attribute: 'sAMAccountName'
         dnAttribute: 'cn'
     allowedGroups:
-      - 'cn=US Professional Services,ou=Non team dls,ou=Groups,ou=Corp,dc=infinidat,dc=com'
+      - 'CN=Professional Services USA,OU=Team Security Groups,OU=Security Groups,OU=Groups,OU=Corp,DC=infinidat,DC=com'
   state:
     enabled: false
   admin:
